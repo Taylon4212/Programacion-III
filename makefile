@@ -11,7 +11,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 # Archivos fuente
-SRCS = main.cpp Personaje.cpp menu.cpp 
+SRCS = main.cpp Personaje.cpp menu.cpp escenarios.cpp
 
 # Archivos objeto
 OBJS = $(SRCS:.cpp=.o)
