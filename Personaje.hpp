@@ -1,11 +1,17 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Heroe.hpp"
 #include "Armas.hpp"
 #include "Inventario.hpp"
 #include <tuple>
 #include <vector>
 #pragma once
+
+enum class Heroe{
+    Sifrino,
+    Otaku,
+    Negro,
+    Fifas
+};
 
 class Personaje {
 private:
@@ -40,6 +46,12 @@ public:
 };
 
 
+enum class Enem{
+    Rata,
+    Cucaracha,
+    Saqueador,
+    Perro,
+};
 
 class Enemigo{
 private:

@@ -1,5 +1,4 @@
 #include <iostream>
-#include "Heroe.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Personaje.hpp"

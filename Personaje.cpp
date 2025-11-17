@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Personaje.hpp"
-#include "Heroe.hpp"
 #include "Armas.hpp"
 
 Personaje::Personaje(Heroe nom) {

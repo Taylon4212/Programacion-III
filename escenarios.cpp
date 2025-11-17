@@ -14,12 +14,12 @@ void Escena::ImprimirTexto(){
 }
 
 void Escena::MostrarOp(){
-    if(!Opciones.empty()){
+    if(Opciones.empty()){
         std::cout<<"Seguir Adelante";
     }
     else{
         int num = 0;
-        for(auto x : Opciones){
+        for(auto x : Textop){
             num++;
             std::cout<<num<<"Opcion: " <<x <<std::endl;
         }
