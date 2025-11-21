@@ -12,17 +12,25 @@ class Escena{
         std::vector<std::string> Textop;
         std::vector<Escena*> Opciones; 
         Enemigo* enemigo;
+
+        int reqVida = 0;
+        int reqFuerza = 0;
+        int reqInteligencia = 0;
+        int reqSuerte = 0;
+
     public:
         Escena(std::string tex);
         void ImprimirTexto();
         void MostrarOp();
         
         bool vivoenemi();
+        bool OpVacio();
         Escena* GetEscena(int n);
         Enemigo* GetEnemigo();
         
         void setEnemi(Enemigo* enen);
         void setOpcion(Escena* es, std::string opci);
-        
-
+        void setRequi(int v, int f, int in, int su);
+        bool Cumplerequi(Personaje& pj);
+    
 };

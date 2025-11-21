@@ -1,15 +1,16 @@
 #include <iostream>
+#include <vector>
 #include "escenarios.hpp"
-
+#pragma once
 
 class Historia{
     private:
 
-        Escena* Inicio;
+        std::vector<Escena*> Lineal;
 
     public:
 
         Historia();
-        Escena* GetEscena();
+        std::vector<Escena*> GetEscena();
 
 };

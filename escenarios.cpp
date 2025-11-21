@@ -9,7 +9,7 @@ Escena::Escena(std::string tex){
 }
 
 void Escena::ImprimirTexto(){
-    std::cout<<texto;
+    std::cout<<texto<<std::endl;
 
 }
 
@@ -53,3 +53,31 @@ bool Escena::vivoenemi(){
 Enemigo* Escena::GetEnemigo(){
     return enemigo;
 }
+
+void Escena::setRequi(int v, int f, int in, int su){
+    
+    reqVida = v;
+    reqFuerza = f;
+    reqInteligencia = in;
+    reqSuerte = su;
+}
+
+bool Escena::Cumplerequi(Personaje& pj){
+    return  pj.getVida() >= reqVida &&
+            pj.getFuerza() >= reqFuerza &&
+            pj.getInteligencia() >= reqInteligencia &&
+            pj.getSuerte() >= reqSuerte;
+
+}
+
+bool Escena::OpVacio(){
+    if(Opciones.empty()){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+
+

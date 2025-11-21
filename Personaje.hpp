@@ -36,7 +36,8 @@ public:
     int getFuerza() const;
     int getInteligencia() const;
     int getSuerte() const;
-    
+    int getdano(); 
+
     //Otros
     void RecogerArma(Arma a, int b);
     std::string TipotoString()const;
@@ -64,5 +65,8 @@ public:
     Enemigo(Enem x );
     bool getVivo() const;
     int getVida() const;
+    std::string getArma() const;
     std::string getNombre() const;
+    void CambiarVida(int i);
+    int getdano();
 };

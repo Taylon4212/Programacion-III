@@ -91,6 +91,9 @@ int Personaje::getInteligencia() const{
 int Personaje::getSuerte() const{
     return suerte;
 }
+int Personaje::getdano(){
+    return std::get<1>(arm);
+}
 
 
 // PASANDO A FUNCIONES DE ENEMIGOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
@@ -132,6 +135,7 @@ int Enemigo::getVida() const{
     return vida;
 }
 std::string Enemigo::getNombre() const{
+
     switch(tipo){
         case Enem::Rata :
             return "Rata";
@@ -146,5 +150,33 @@ std::string Enemigo::getNombre() const{
             return "Perro";
     }
     return "";
+}
+
+std::string Enemigo::getArma() const{
+
+    switch(std::get<0>(arm)){
+        case ArmEne::Ninguna :
+            return "Ninguna";
+        
+        case ArmEne::Garras :
+            return "Garras";
+        
+        case ArmEne::Mordida :
+            return "Mordida";
+        
+        case ArmEne::Pistola :
+            return "Pistola";
+    }
+    return "";
+}
+
+void Enemigo::CambiarVida(int i){
+    vida = vida + i;
+    if(vida <= 0){
+        vivo = false;
+    }
+}
+int Enemigo::getdano(){
+    return std::get<1>(arm);
 }
 
