@@ -8,9 +8,8 @@ Escena::Escena(std::string tex){
     enemigo = nullptr;
 }
 
-void Escena::ImprimirTexto(){
-    std::cout<<texto<<std::endl;
-
+std::string Escena::GetTexto(){
+    return texto;
 }
 
 void Escena::MostrarOp(){
@@ -27,9 +26,12 @@ void Escena::MostrarOp(){
 
 
 }
+std::vector<std::string> Escena::GetTextop() const{
+    return Textop;
+}
 
 Escena* Escena::GetEscena(int n){
-    return Opciones[n - 1];
+    return Opciones[n];
 }
 
 void Escena::setEnemi(Enemigo* enen){

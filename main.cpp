@@ -9,15 +9,16 @@
 
 int main()
 {
-    Historia h; 
-    Personaje p1(Heroe::Negro);
-    Juego game;
-    game.Iniciar(p1, h);
+    sf::RenderWindow window(sf::VideoMode(800,600), "FArlaut RPG");
 
     Menu m;
-    while(m.MostrarMenu()){
-        
+
+    while(window.isOpen()){
+
+        m.MostrarMenu(window);
+
+
     }
-    
+
     return 0;
 }

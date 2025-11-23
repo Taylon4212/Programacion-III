@@ -22,8 +22,7 @@ Historia::Historia(){
     Escena* Opcion2 = new Escena("Al investigar un poco el edificio, escuchas unos chillidos como de puertas no engrasadas, decides entrar al pasillo oscuro y te encuentras.\n"
 	"¿Una… cucaracha?...\n"
 	"En el bunker vi muchas, pero no de el TAMAÑO DE UNA PERSONA!!!. De sus piezas bucales gotea un líquido verde y viscoso que sisea al tocar el suelo, dejando un pequeño hoyo humeante. No es solo espantosa... es una fábrica ambulante de veneno radiactivo\n"
-    "La criatura detiene su deambular. Sus antenas se erizan y se giran hacia ti con una velocidad sobrenatural. No hay tiempo para correr. ¡Es una batalla!\n"
-);
+    "La criatura detiene su deambular. Sus antenas se erizan y se giran hacia ti con una velocidad sobrenatural. No hay tiempo para correr. ¡Es una batalla!\n");
     Enemigo* z = new Enemigo(Enem::Cucaracha);
     Opcion2->setEnemi(z);
 
@@ -31,12 +30,9 @@ Historia::Historia(){
     Decision->setOpcion(Opcion1, "Salir y investigar que sucedió ");
     Decision->setOpcion(Opcion2, "Quedarse e investigar el lugar");
     //Recordar Utilizar En Funcion Escenario un booleano para saber si tiene opciones
-    Lineal.push_back(new Escena("Sexooooo prueba cap 2"));
-    Lineal.push_back(new Escena("Sexooooo prueba cap 3"));
+    Lineal.push_back(new Escena(" prueba cap 2"));
+    Lineal.push_back(new Escena(" prueba cap 3"));
     
-
-
-
 }
 
 std::vector<Escena*> Historia::GetEscena(){

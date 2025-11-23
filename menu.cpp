@@ -73,7 +73,7 @@ void Menu::MostrarCreditos(sf::RenderWindow& window){
     }
 }
 
-bool Menu::MostrarMenu(){
+void Menu::MostrarMenu(sf::RenderWindow& window){
 
     // Cargar los sonidos del menu
 
@@ -111,11 +111,6 @@ bool Menu::MostrarMenu(){
 
 
 
-
-        //Mostrar Ventana
-        
-        sf::RenderWindow window(sf::VideoMode({800, 600}), "Farlaut RPG");
-
         //Ajustando el fondo a la ventana
         float ventanaAncho = static_cast<float>(window.getSize().x);
         float ventanaAlto = static_cast<float>(window.getSize().y);
@@ -126,7 +121,7 @@ bool Menu::MostrarMenu(){
 
         //Reproducioendo la musica
         //MusicMenu.play();
-        SeleccionNegro.play();
+        //SeleccionNegro.play();
 
 
         //Botones de iniciar partida
@@ -176,7 +171,10 @@ bool Menu::MostrarMenu(){
                         sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
 
                         if(hitBoxNuevo.contains(clickPos)){
-                            Personaje Jugador(elegirPersonaje(window));
+                            Personaje Pj(elegirPersonaje(window));
+                            Historia h;
+                            Juego game(window);
+                            game.Iniciar(Pj, h);
                         }
                         else if(hitBoxCreditos.contains(clickPos)){
                             MostrarCreditos(window);
@@ -214,7 +212,6 @@ bool Menu::MostrarMenu(){
             window.draw(Salir);
             window.display();
         }
-        return false;
     }
 
 Heroe Menu::elegirPersonaje(sf::RenderWindow& window){

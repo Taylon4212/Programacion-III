@@ -20,13 +20,15 @@ class Escena{
 
     public:
         Escena(std::string tex);
-        void ImprimirTexto();
+        
         void MostrarOp();
         
         bool vivoenemi();
         bool OpVacio();
         Escena* GetEscena(int n);
         Enemigo* GetEnemigo();
+        std::string GetTexto();
+        std::vector<std::string> GetTextop() const;
         
         void setEnemi(Enemigo* enen);
         void setOpcion(Escena* es, std::string opci);
