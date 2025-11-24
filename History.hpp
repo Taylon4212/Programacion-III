@@ -11,6 +11,7 @@ class Historia{
     public:
 
         Historia();
-        std::vector<Escena*> GetEscena();
+        ~Historia();
+        const std::vector<Escena*>& GetEscena() const;
 
 };

@@ -20,6 +20,7 @@ class Escena{
 
     public:
         Escena(std::string tex);
+        ~Escena();
         
         void MostrarOp();
         

@@ -9,7 +9,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800,600), "FArlaut RPG");
+    sf::RenderWindow window(sf::VideoMode(1220,800), "FArlaut RPG");
 
     Menu m;
 

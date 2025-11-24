@@ -7,6 +7,19 @@ Escena::Escena(std::string tex){
     texto = tex;
     enemigo = nullptr;
 }
+Escena::~Escena() {
+    if (enemigo != nullptr) {
+        delete enemigo;
+        enemigo = nullptr;
+    }
+
+    for (Escena* opcion : Opciones) {
+        if (opcion != nullptr) {
+            delete opcion; 
+        }
+    }
+
+}
 
 std::string Escena::GetTexto(){
     return texto;

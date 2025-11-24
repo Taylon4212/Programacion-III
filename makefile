@@ -5,7 +5,7 @@ TARGET = juego
 CXX = g++
 
 # Flags del compilador
-CXXFLAGS = -std=c++17 -Wall -Wextra
+CXXFLAGS = -std=c++17 -Wall -Wextra -g -fsanitize=address
 
 # Librerías SFML
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio

@@ -35,6 +35,14 @@ Historia::Historia(){
     
 }
 
-std::vector<Escena*> Historia::GetEscena(){
+Historia::~Historia() {
+    for (Escena* escena : Lineal) {
+        if (escena != nullptr) {
+            delete escena; 
+        }
+    }
+}
+
+const std::vector<Escena*>& Historia::GetEscena() const {
     return Lineal;
 }

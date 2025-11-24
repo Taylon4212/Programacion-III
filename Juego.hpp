@@ -9,22 +9,24 @@
 
 class Juego{
     private:
-        sf::RenderWindow& window; 
+        sf::RenderWindow& window;
+        sf::Texture fondo;
         sf::Font font;           
         sf::Text textoVisible;   
         sf::Clock clock;         
-        sf::Text textoAtributos; 
+        sf::Text textoAtributos;
         sf::Text textoVida;      
         std::vector<sf::Text> opcionesTextoSFML;
         std::vector<sf::FloatRect> BoxOpciones;
-       
+        
         
         std::string textoCompletoActual;
-        int caracteresMostrados;
+        size_t caracteresMostrados;
         bool paginaTerminada;
-        const sf::Time TIEMPO_POR_CARACTER = sf::milliseconds(40); 
+        const sf::Time TIEMPO_POR_CARACTER = sf::milliseconds(40);
+        const float ANCHO_MAXIMO_TEXTO = 700.0f;
 
-        bool Pelear(Personaje& pj, Enemigo& enem);
+        bool Pelear(sf::RenderWindow& window, Personaje& pj, Enemigo& enem);
         void ResetearNarrativa(const std::string& nuevoTexto);
         void ActualizarInfoPersonaje(const Personaje& pj);
         void RenderizarOpciones(const Escena* escenaActual);

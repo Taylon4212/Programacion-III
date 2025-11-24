@@ -218,8 +218,8 @@ Heroe Menu::elegirPersonaje(sf::RenderWindow& window){
     //Image de Fondo
     sf::Font font;
     font.loadFromFile("Textos/leadcoat.ttf");
-    sf::Text Juego("Selecciona un Personaje", font, 60);
-    Juego.setPosition(130, 90);
+    sf::Text Juego("Selecciona un Personaje", font, 80);
+    Juego.setPosition(280, 140);
     sf::Texture fondo;
     fondo.loadFromFile("Imagenes/Menus.jpg");
     sf::Sprite fondoSprite(fondo);
@@ -228,37 +228,42 @@ Heroe Menu::elegirPersonaje(sf::RenderWindow& window){
 
     float xventana = static_cast<float>(window.getSize().x);
     float yventana = static_cast<float>(window.getSize().y);
-
     float escalaX = xventana / fondo.getSize().x;
     float escalaY = yventana / fondo.getSize().y;
 
     fondoSprite.setScale(escalaX,escalaY);
 
+    
     //Negro Imagen y Titulo
     sf::Texture Negro;
     Negro.loadFromFile("Imagenes/Negro.png");
     sf::Sprite Negros(Negro);
-    Negros.setPosition(190,170);
+    Negros.setScale( 150.0f / Negro.getSize().x, 150.0f / Negro.getSize().y);
+
+    Negros.setPosition(190, 380);
     sf::Text TextoNegro("Negro" , font, 40);
-    TextoNegro.setPosition(210,300);
+    TextoNegro.setPosition(210, 520);
+    
 
 
     //Sifrino Imagen y Titulo
     sf::Texture Sifrino;
     Sifrino.loadFromFile("Imagenes/Sifrinos.png");
     sf::Sprite Sifrinos(Sifrino);
-    Sifrinos.setPosition(440, 170);
+    Sifrinos.setPosition(660, 380);
     sf::Text TextoSifrino("Sifrino", font, 40);
-    TextoSifrino.setPosition(460,300);
+    TextoSifrino.setPosition(680,520);
+    Sifrinos.setScale( 150.0f / Sifrino.getSize().x, 150.0f / Sifrino.getSize().y);
 
 
     //Otaku Imagen y Titulo
     sf::Texture Otaku;
     Otaku.loadFromFile("Imagenes/Otaku.png");
     sf::Sprite Otakus(Otaku);
-    Otakus.setPosition(190, 380);
+    Otakus.setPosition(910, 380);
     sf::Text TextoOtaku("Otaku", font, 40);
-    TextoOtaku.setPosition(210, 520);
+    TextoOtaku.setPosition(920, 520);
+    Otakus.setScale( 150.0f / Otaku.getSize().x, 150.0f / Otaku.getSize().y);
 
     //Fifas Imagen y Titulo
     
@@ -268,6 +273,7 @@ Heroe Menu::elegirPersonaje(sf::RenderWindow& window){
     Fifas.setPosition(440, 380);
     sf::Text TextoFifa("Fifas", font, 40);
     TextoFifa.setPosition(460, 520);
+    Fifas.setScale( 150.0f / Fifa.getSize().x, 150.0f / Fifa.getSize().y);
     
     //Hitbox para cada imagen y titulo
     //Imagenes

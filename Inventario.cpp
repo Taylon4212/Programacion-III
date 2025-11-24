@@ -1,12 +1,16 @@
 #include <iostream>
 #include "Inventario.hpp"
 
-Objeto::Objeto(TipoObjeto t, std::string n, std::string u, int c) {
-    tipo = t;
-    nombre = n;
-    uso = u;
-    cantidad = c;
+Objeto::Objeto(TipoObjeto t, std::string n, std::string u, int c, const std::string& texture)
+    : tipo(t), nombre(n), uso(u), cantidad(c) {
+    
+    if (!textura.loadFromFile(texture)) {
+        std::cerr << "Error al cargar la textura del objeto: " << texturePath << std::endl;
+    }
+    sprite.setTexture(textura);
+    sprite.setScale(0.5f, 0.5f);
 }
+
 TipoObjeto Objeto::getTipo() const {
     return tipo;
 }
@@ -31,4 +35,8 @@ bool Objeto::usarObjeto(int c){
         std::cout<<"No tienes suficientes objetos de este tipo para usar"<<std::endl;
         return false;
     }
+}
+sf::Sprite& Objeto::getSprite(){
+
+    return sprite;
 }
