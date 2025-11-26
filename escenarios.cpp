@@ -3,57 +3,35 @@
 #include <vector>
 
 
-Escena::Escena(std::string tex){
+Escena::Escena(const std::string& tex, const std::string& rutafondo){
+
+    fondoes.loadFromFile(rutafondo);
     texto = tex;
     enemigo = nullptr;
+
 }
+
 Escena::~Escena() {
     if (enemigo != nullptr) {
         delete enemigo;
         enemigo = nullptr;
     }
+    
+    for(Objeto* obj : objetosEnEscena){
+        if(obj != nullptr){
+            delete obj;
+        }
+    }
+    objetosEnEscena.clear();
 
     for (Escena* opcion : Opciones) {
         if (opcion != nullptr) {
-            delete opcion; 
+            delete opcion;
         }
     }
 
-}
-
-std::string Escena::GetTexto(){
-    return texto;
-}
-
-void Escena::MostrarOp(){
-    if(Opciones.empty()){
-        std::cout<<"Seguir Adelante";
-    }
-    else{
-        int num = 0;
-        for(auto x : Textop){
-            num++;
-            std::cout<<num<<"Opcion: " <<x <<std::endl;
-        }
-    }
-
-
-}
-std::vector<std::string> Escena::GetTextop() const{
-    return Textop;
-}
-
-Escena* Escena::GetEscena(int n){
-    return Opciones[n];
-}
-
-void Escena::setEnemi(Enemigo* enen){
-    enemigo = enen;
-}
-
-void Escena::setOpcion(Escena* es, std::string opci){
-    Textop.push_back(opci);
-    Opciones.push_back(es);
+    Opciones.clear();
+    
 }
 
 bool Escena::vivoenemi(){
@@ -64,27 +42,6 @@ bool Escena::vivoenemi(){
         return true;
     }
 }
-
-Enemigo* Escena::GetEnemigo(){
-    return enemigo;
-}
-
-void Escena::setRequi(int v, int f, int in, int su){
-    
-    reqVida = v;
-    reqFuerza = f;
-    reqInteligencia = in;
-    reqSuerte = su;
-}
-
-bool Escena::Cumplerequi(Personaje& pj){
-    return  pj.getVida() >= reqVida &&
-            pj.getFuerza() >= reqFuerza &&
-            pj.getInteligencia() >= reqInteligencia &&
-            pj.getSuerte() >= reqSuerte;
-
-}
-
 bool Escena::OpVacio(){
     if(Opciones.empty()){
         return true;
@@ -94,5 +51,108 @@ bool Escena::OpVacio(){
     }
 }
 
+Escena* Escena::GetEscena(int n){
+    return Opciones[n];
+}
+
+Enemigo* Escena::GetEnemigo(){
+    return enemigo;
+}
+
+std::string Escena::GetTexto(){
+    return texto;
+}
 
 
+std::vector<std::string> Escena::GetTextop() const{
+    return Textop;
+}
+
+
+
+void Escena::setEnemi(Enemigo* enen){
+    enemigo = enen;
+}
+
+void Escena::setOpcion(Escena* es, std::string opci){
+    Textop.push_back(opci);
+    Opciones.push_back(es);
+}
+
+
+
+void Escena::setRequi(int f, int in, int su){
+    reqFuerza = f;
+    reqInteligencia = in;
+    reqSuerte = su;
+
+
+}
+
+bool Escena::Cumplerequi(Personaje& pj){
+    if(pj.getFuerza() >= reqFuerza && pj.getInteligencia() >= reqInteligencia && pj.getSuerte() >= reqSuerte && necesitallave()){
+        if(pj.tieneLlave( m_nombreLlaveRequerida)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+
+    }
+    else{
+        return false;
+    }
+
+}
+
+void Escena::setLlaveRequerida(const std::string& nombreLlave){
+    m_nombreLlaveRequerida = nombreLlave;
+}
+
+const std::string& Escena::getLlaveRequerida()const {
+
+    return m_nombreLlaveRequerida;
+
+}
+
+bool Escena::necesitallave(){
+
+    if(m_nombreLlaveRequerida == ""){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+void Escena::anadirObjEs(Objeto* obj){
+    objetosEnEscena.push_back(obj);
+}
+
+void Escena::removerObjEs(Objeto* obj){
+    for (auto it = objetosEnEscena.begin(); it != objetosEnEscena.end(); ++it) {
+        if (*it == obj) {
+            objetosEnEscena.erase(it);
+        }
+    }    
+
+}
+
+bool Escena::tieneobj(){
+    if(objetosEnEscena.empty()){
+        return false;
+    }
+    return true;
+}
+
+int Escena::cantObjetos(){
+    return objetosEnEscena.size();
+}
+
+const std::vector<Objeto*>& Escena::getObjetos() const{
+    return objetosEnEscena;
+}
+void Escena::Vaciar(){
+    objetosEnEscena.clear();
+}

@@ -22,11 +22,12 @@ private:
     int fuerza;
     Heroe tipo;
     std::tuple<Arma, int> arm;
-    std::vector<Objeto> inventario;
+    std::vector<Objeto*> inventario;
 
 public:
     //Constructor
     Personaje(Heroe nom);
+    ~Personaje();
 
     //Getters
     bool getVivo() const;
@@ -44,7 +45,14 @@ public:
     void Curar(int v);
     void RecibirDanio(int d);
 
+    //Inventario pe
+    void anadirObjeto(Objeto* obj);
+    bool usarObjetoEnRanura(int indiceRanura);
+    const std::vector<Objeto*>& getInventario() const; // Devuelve referencia constante
+    bool tieneLlave(const std::string& nombreLlave) const;
+    void consumirLlave(const std::string& nombreLlave);
 };
+
 
 
 enum class Enem{

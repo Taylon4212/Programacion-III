@@ -11,6 +11,14 @@ Juego::Juego(sf::RenderWindow& Window) : window(Window){
     }
     fondo.loadFromFile("Imagenes/FondoJuego.png");
 
+    Continuar.setFont(font);
+    Continuar.setString("Continuar");
+    Continuar.setCharacterSize(22);
+    Continuar.setFillColor(sf::Color::Blue);
+    Continuar.setPosition(400.f, 600.f);
+    BoxContinuar = Continuar.getGlobalBounds();
+
+
     textoVisible.setFont(font);
     textoVisible.setCharacterSize(22);
     textoVisible.setFillColor(sf::Color::White);
@@ -64,7 +72,7 @@ void Juego::ResetearNarrativa(const std::string& text ){
 void Juego::ActualizarInfoPersonaje(const Personaje& pj) {
     std::string atributos = "Fuerza: " + std::to_string(pj.getFuerza()) + " | Intel: " + std::to_string(pj.getInteligencia()) + " | Suerte: " + std::to_string(pj.getSuerte());
     textoAtributos.setString(atributos);
-    std::string vida = "VIDA: " + std::to_string(pj.getVida()) + "/10"; // Ajusta 100 si es necesario
+    std::string vida = "VIDA: " + std::to_string(pj.getVida()) + "/10";
     textoVida.setString(vida);
 }
 
@@ -245,22 +253,30 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                 if(z->OpVacio()){
 
                     if(event.type == sf::Event::MouseButtonReleased){
-                        if(z->vivoenemi()){
-                            Pelear(window, pj, *z->GetEnemigo());
-                        }
 
-                        i++;
-                        if (i < f){
-                            z = allescenes[i];
-                            ResetearNarrativa(z->GetTexto());
-                        }
-                        else{
-                            std::cout<<"Historia Terminada";
-                            //Funcion Game Over
+                        if(event.mouseButton.button == sf::Mouse::Left){
+
+                            sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
+
+                            if(BoxContinuar.contains(clickPos)){
+                                if(z->vivoenemi()){
+                                    Pelear(window, pj, *z->GetEnemigo());
+                                }
+
+                                i++;
+                                if (i < f){
+                                    z = allescenes[i];
+                                    ResetearNarrativa(z->GetTexto());
+                                }
+                                else{
+                                    std::cout<<"Historia Terminada";
+                                    //Funcion Game Over
+                                }
+                            }
                         }
                     }
                 }
-                else{ 
+                else{
                     if(event.mouseButton.button == sf::Mouse::Left){
                         sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
 
@@ -273,6 +289,22 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
 
                         }
                     }
+                }
+
+                if(z->tieneobj()){
+                    for(auto x : z->getObjetos()){
+                        Objeto* copia = new Objeto(x->getTipo(),         
+                        x->getNombre(),
+                        x->getUso(),
+                        x->getCantidad(),
+                        x->getEfecto(),
+                        x->getTexturePath()
+                        );
+
+                        pj.anadirObjeto(copia);
+
+                    }
+                    z->Vaciar();
                 }
             }
             else{
@@ -321,6 +353,11 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                 window.draw(opcion);
             }
         }
+
+        if(paginaTerminada && z->OpVacio()){
+            window.draw(Continuar);
+        }
+
         window.draw(textoVisible);
         window.draw(textoVida);
         window.draw(textoAtributos);

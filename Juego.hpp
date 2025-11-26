@@ -15,7 +15,9 @@ class Juego{
         sf::Text textoVisible;   
         sf::Clock clock;         
         sf::Text textoAtributos;
-        sf::Text textoVida;      
+        sf::Text textoVida;
+        sf::Text Continuar;
+        sf::FloatRect BoxContinuar;
         std::vector<sf::Text> opcionesTextoSFML;
         std::vector<sf::FloatRect> BoxOpciones;
         

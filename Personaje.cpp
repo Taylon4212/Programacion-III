@@ -35,6 +35,15 @@ Personaje::Personaje(Heroe nom) {
             break;
     }
 }
+Personaje::~Personaje(){
+
+    for (Objeto* obj : inventario) {
+        delete obj;
+    }
+    inventario.clear();
+
+}
+
 void Personaje::ImprimirStats()const{
     std::cout<<" Vida: " <<vida << "Inteligencia, Fuerza: " <<inteligencia << " " <<fuerza;
 
@@ -93,6 +102,76 @@ int Personaje::getSuerte() const{
 }
 int Personaje::getdano(){
     return std::get<1>(arm);
+}
+void Personaje::anadirObjeto(Objeto* obj){
+    bool encontradoYAgregado = false;
+    for (auto it = inventario.begin(); it != inventario.end(); ++it) {
+        Objeto* objExistente = *it; 
+    
+        if (objExistente && obj) {
+
+            if (objExistente->getNombre() == obj->getNombre()) {
+                objExistente->sumarCantidad(obj->getCantidad()); 
+                encontradoYAgregado = true;
+                delete obj;
+                obj = nullptr;
+                break;
+            }
+        }
+    }
+    if (!encontradoYAgregado && obj) { 
+        inventario.push_back(obj);
+    }
+}
+
+
+bool Personaje::usarObjetoEnRanura(int indiceRanura){
+    
+    Objeto* objetoACambiar = inventario[indiceRanura];
+    if (!objetoACambiar) {
+        std::cerr << "Error: La ranura de inventario " << indiceRanura << " contiene un puntero nulo." << std::endl;
+        return false;
+    }
+
+    bool AunHay = objetoACambiar->usarObjeto(*this); 
+    if (AunHay) {
+        return true;
+    }
+    else{
+        delete objetoACambiar;
+        inventario.erase(inventario.begin() + indiceRanura); 
+        return true;
+    }
+
+}
+
+const std::vector<Objeto*>& Personaje::getInventario() const{
+
+    return inventario;
+
+}
+
+
+bool Personaje::tieneLlave(const std::string& nombreLlave) const{
+
+    for(auto x : inventario){
+        if(x && x->getNombre() == nombreLlave){
+            return true;
+        }
+    }
+    return false;
+
+}
+void Personaje::consumirLlave(const std::string& nombreLlave){
+    for (auto it = inventario.begin(); it != inventario.end(); ++it) {
+        Objeto* obj = *it;
+        if (obj && obj->getTipo() == TipoObjeto::Llave && obj->getNombre() == nombreLlave) {
+            delete obj; 
+            inventario.erase(it); 
+            return; 
+        }
+    }
+
 }
 
 
