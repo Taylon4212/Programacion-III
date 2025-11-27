@@ -17,9 +17,9 @@ Historia::Historia(){
 
     auto x = new Objeto(TipoObjeto::Curar, "Botiuin", "Cura 1 puntos al personaje", 1, 1,  "Imagenes/Botiuin.png");
     auto y = new Objeto(TipoObjeto::Llave, "Llave de Bronce", "Uso Desconocido", 1, 1, "Imagenes/LlaveBronce.png");
-    auto o = new Objeto(TipoObjeto::Curar, "Pildora", "Cura 2 puntos al personaje", 3, 2, "Imagenes/Pildora.png");
+    auto o = new Objeto(TipoObjeto::Curar, "Pildora", "Cura 2 puntos al personaje", 2, 2, "Imagenes/Pildora.png");
     aggIn->anadirObjEs(y);
-    aggIn->anadirObjEs(x);
+    aggIn->anadirObjEs(o);
 
 
     Lineal.push_back(new Escena(TextoEscena, "Imagenes/Escena2.png"));
@@ -28,7 +28,7 @@ Historia::Historia(){
 
     Escena* Opcion1 = new Escena("Al salir e investigar un poco, nuestro personaje se da cuenta de que simplemente se desprende un pedazo de terraza de un edificio, la caída provoco ese sonido tan ensordecedor. te alivias por un instante, luego te das cuenta de que es muy probable de que en algún momento te pueda caer un pedazo de edificio encima.\n"
     "Supongo que debo tener vigilado el cielo…","Imagenes/Escena2op1.png" );
-    Opcion1->anadirObjEs(o);
+    Opcion1->anadirObjEs(x);
     Escena* Opcion2 = new Escena("Al investigar un poco el edificio, escuchas unos chillidos como de puertas no engrasadas, decides entrar al pasillo oscuro y te encuentras.\n"
 	"¿Una… cucaracha?...\n"
 	"En el bunker vi muchas, pero no de el TAMAÑO DE UNA PERSONA!!!. De sus piezas bucales gotea un líquido verde y viscoso que sisea al tocar el suelo, dejando un pequeño hoyo humeante. No es solo espantosa... es una fábrica ambulante de veneno radiactivo\n"

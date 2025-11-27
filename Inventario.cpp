@@ -26,7 +26,7 @@ Objeto::Objeto(const Objeto& otro)
       m_texturePath(otro.m_texturePath)
 {
     if (!textura.loadFromFile(m_texturePath)) {
-        std::cerr << "Error al cargar la textura del objeto (copia): " << m_texturePath << std::endl;
+        std::cerr << "Error al cargar la textura del objeto" << m_texturePath << std::endl;
     }
     
     sprite.setTexture(textura);

@@ -23,6 +23,10 @@ private:
     Heroe tipo;
     std::tuple<Arma, int> arm;
     std::vector<Objeto*> inventario;
+    sf::Texture PosesPersonaje;
+    sf::Sprite PosesPersonajes;
+    sf::Texture FotoPer;
+    sf::Sprite FotoPers;
 
 public:
     //Constructor
@@ -38,6 +42,9 @@ public:
     int getInteligencia() const;
     int getSuerte() const;
     int getdano(); 
+    sf::Texture& getTexture();
+    sf::Sprite& getSprite();
+    sf::Sprite& getFoto();
 
     //Otros
     void RecogerArma(Arma a, int b);

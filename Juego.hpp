@@ -23,6 +23,12 @@ class Juego{
         std::vector<sf::Text> TextObjetos;
         std::vector<sf::Sprite> ObjetosPerso;
         std::vector<sf::FloatRect> BoxObjetos;
+        sf::Text Inventario;
+
+        sf::RectangleShape CuadroTexto;
+        std::vector<sf::Text> Textito;
+
+        
         
         
         std::string textoCompletoActual;
@@ -37,6 +43,7 @@ class Juego{
         void RenderizarOpciones(const Escena* escenaActual);
         void ActualizarInventario(Escena* h);
         void InventarioPersonaje(const Personaje& pj);
+        void InfoObjeto(const Personaje& pj);
         
     public:
         void Iniciar(Personaje& pj, Historia& h);

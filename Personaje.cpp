@@ -14,26 +14,42 @@ Personaje::Personaje(Heroe nom) {
             suerte = 13;
             inteligencia = 6;
             fuerza = 5;
+            PosesPersonaje.loadFromFile("Imagenes/SifrinoPos1.png");
+            FotoPer.loadFromFile("Imagenes/Sifrinos.png");
             break;
         case Heroe::Otaku:
             vida = 5;
             suerte = 15;
             inteligencia = 3;
             fuerza = 6;
+            PosesPersonaje.loadFromFile("Imagenes/OtakuPos1.png");
+            FotoPer.loadFromFile("Imagenes/Otaku.png");
             break;
         case Heroe::Negro:
             vida = 7;
             suerte = 2;
             inteligencia = 12;
             fuerza = 8;
+            PosesPersonaje.loadFromFile("Imagenes/NegroPos1.png");
+            FotoPer.loadFromFile("Imagenes/Negro.png");
             break;   
         case Heroe::Fifas:
             vida = 5;
             inteligencia = 3;
             suerte = 6;
             fuerza = 13;
+            PosesPersonaje.loadFromFile("Imagenes/FifasPos1.png");
+            FotoPer.loadFromFile("Imagenes/Fifas.png");
             break;
     }
+
+    PosesPersonajes.setTexture(PosesPersonaje);
+    PosesPersonajes.setScale(0.7f, 0.7f);
+    PosesPersonajes.setPosition(260,500);
+    FotoPers.setTexture(FotoPer);
+    FotoPers.setScale(0.2f, 0.15f);
+    FotoPers.setPosition(920.f , 40.f);
+
 }
 Personaje::~Personaje(){
 
@@ -172,6 +188,15 @@ void Personaje::consumirLlave(const std::string& nombreLlave){
         }
     }
 
+}
+sf::Texture& Personaje::getTexture(){
+    return PosesPersonaje;
+}
+sf::Sprite& Personaje::getSprite(){
+    return PosesPersonajes;
+}
+sf::Sprite& Personaje::getFoto(){
+    return FotoPers;
 }
 
 

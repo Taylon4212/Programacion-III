@@ -25,17 +25,32 @@ Juego::Juego(sf::RenderWindow& Window) : window(Window){
     textoVisible.setPosition(50.f, 150.f);
 
     textoAtributos.setFont(font);
-    textoAtributos.setCharacterSize(18);
+    textoAtributos.setCharacterSize(20);
     textoAtributos.setFillColor(sf::Color::Cyan); 
-    textoAtributos.setPosition(900.f, 50.f); 
+    textoAtributos.setPosition(900.f, 260.f); 
 
     textoVida.setFont(font);
-    textoVida.setCharacterSize(18);
+    textoVida.setCharacterSize(20);
     textoVida.setFillColor(sf::Color::Green);
-    textoVida.setPosition(950.f, 100.f);
+    textoVida.setPosition(950.f, 220.f);
+
+    Inventario.setString("Inventario: ");
+    Inventario.setFont(font);
+    Inventario.setCharacterSize(25);
+    Inventario.setFillColor(sf::Color::White);
+    Inventario.setPosition(950.f, 300.f);
     
     caracteresMostrados = 0;
     paginaTerminada = false;
+
+    CuadroTexto.setFillColor(sf::Color(30, 28, 70, 200)); 
+    CuadroTexto.setOutlineColor(sf::Color::White);
+    CuadroTexto.setOutlineThickness(1.0f);
+    CuadroTexto.setSize({230.f, 80.f});
+    CuadroTexto.setPosition(650.f, 700.f);
+
+    
+
 }
 
 void Juego::ResetearNarrativa(const std::string& text ){
@@ -83,6 +98,8 @@ void Juego::InventarioPersonaje(const Personaje& pj){
     sf::Texture texture;
     int j = 0.f;
     int i = 0.f;
+    ObjetosPerso.clear();
+    BoxObjetos.clear();
 
     for(auto x : pj.getInventario()){
 
@@ -139,6 +156,25 @@ void Juego::RenderizarOpciones(const Escena* escenaActual) {
 }
 
 
+void Juego::InfoObjeto(const Personaje& pj) {
+
+    Textito.clear();
+    sf::Text mientras("", font, 20);
+    std::string info;
+    auto x = pj.getInventario();
+
+    for(size_t j = 0; j < x.size(); j++){
+
+        info = x[j]->getNombre() + "\n";
+        info += "Uso: " + x[j]->getUso() + "\n";
+        info += "Cantidad: " + std::to_string( x[j]->getCantidad());
+        mientras.setPosition(650.f, 700.f);
+
+        mientras.setString(info);
+        Textito.push_back(mientras);
+    }
+
+}
 
 
 
@@ -154,35 +190,64 @@ bool Juego::Pelear(sf::RenderWindow& window, Personaje& pj, Enemigo& enem){
     sf::Clock clock;
     const sf::Time TIEMPO_ESPERA = sf::seconds(1.5f);
 
-    sf::Text Danopj(std::to_string(pj.getdano()), font, 50);
-    sf::Text Danoen(std::to_string(enem.getdano()), font, 50);
-    sf::Text Vidapj("Vida: " + std::to_string(pj.getVida()), font, 50);
-    sf::Text Vidaen("    " + enem.getNombre() + "\n Vida: " + std::to_string(enem.getVida()), font, 50);
+    sf::Text Danopj(std::to_string(-(pj.getdano())), font, 50);
+    sf::Text Danoen(std::to_string(-(enem.getdano())), font, 50);
+    Danoen.setFillColor(sf::Color::Red);
+    Danopj.setFillColor(sf::Color::Red);
+    //sf::Text Vidapj("Vida: " + std::to_string(pj.getVida()), font, 50);
+    sf::Text Vidaen("    " + enem.getNombre() + "\n Vida: " + std::to_string(enem.getVida()), font, 37);
 
-    Danopj.setPosition(200, 200);
-    Danoen.setPosition(100, 100);
-    Vidapj.setPosition(300, 300);
-    Vidaen.setPosition(400, 400);
+    Danopj.setPosition(330, 250);
+    Danoen.setPosition(290, 460);
+    //Vidapj.setPosition(300, 300);
+    Vidaen.setPosition(420, 420);
+
 
     bool Endpj = false;
     bool Enden = false;
 
-    sf::Text victoria("Victoria", font, 50);
-    victoria.setPosition(50, 40);
-    sf::Text derrota("Derrota", font, 50);
-    derrota.setPosition(50,40);
+    sf::Text victoria("Victoria", font, 100);
+    victoria.setPosition(150, 150);
+    sf::Text derrota("Derrota", font, 100);
+    derrota.setPosition(150,150);
 
 
     while(window.isOpen()){
-
-        //sf::Sprite pj(pj.Imagen(0));
-        //sf::Sprite En(en.Imagen(0));
         sf::Event event;
+        sf::Vector2f mousepos = (sf::Vector2f)sf::Mouse::getPosition(window);
         
         while (window.pollEvent(event)){
 
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            if(event.type == sf::Event::MouseButtonReleased)
+            {
+
+                if(event.mouseButton.button == sf::Mouse::Left)
+                {
+                    sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
+
+                    if(!ObjetosPerso.empty()){
+
+                        for(size_t x = 0; x < BoxObjetos.size() ; x++){
+
+                            if(BoxObjetos[x].contains(clickPos)){
+
+                                pj.usarObjetoEnRanura(x);
+                                ActualizarInfoPersonaje(pj);
+                                InventarioPersonaje(pj);
+                                //Vidapj.setString("Vida: " + std::to_string(pj.getVida()));
+
+                            }
+
+                        }
+
+                    }
+                }
+                
+            }
+                    
 
         }
 
@@ -208,7 +273,7 @@ bool Juego::Pelear(sf::RenderWindow& window, Personaje& pj, Enemigo& enem){
             if(clock.getElapsedTime() >= TIEMPO_ESPERA){
                 pj.RecibirDanio(enem.getdano());
                 ActualizarInfoPersonaje(pj);
-                Vidapj.setString("Vida: " + std::to_string(pj.getVida()));
+                //Vidapj.setString("Vida: " + std::to_string(pj.getVida()));
                 clock.restart();
                 Enden = true;
             }
@@ -230,15 +295,31 @@ bool Juego::Pelear(sf::RenderWindow& window, Personaje& pj, Enemigo& enem){
         }
 
 
-
-        
-
+        if(!ObjetosPerso.empty()){
+            for(size_t x = 0; x < BoxObjetos.size() ; x++){
+                if(BoxObjetos[x].contains(mousepos)){
+                    ObjetosPerso[x].setColor(sf::Color::Red);
+                }
+                else{
+                    ObjetosPerso[x].setColor(sf::Color::White);
+                }
+            }
+        }
 
         window.clear();
         window.draw(FondoPelea);
-        window.draw(Danopj);
-        window.draw(Danoen);
-        window.draw(Vidapj);
+                
+        
+
+        if(Enden){
+            window.draw(Danoen);
+           
+        }else if(Endpj){
+            window.draw(Danopj);
+            
+        }
+        
+        //window.draw(Vidapj);
         window.draw(Vidaen);
 
         if(pj.getVivo() && !enem.getVivo()){
@@ -252,8 +333,12 @@ bool Juego::Pelear(sf::RenderWindow& window, Personaje& pj, Enemigo& enem){
                 window.draw(f);
             }
         }
+        
         window.draw(textoAtributos);
         window.draw(textoVida);
+        window.draw(Inventario);
+        window.draw(pj.getSprite());
+        window.draw(pj.getFoto());
         window.display();
     }
     return pj.getVivo();
@@ -300,19 +385,18 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            
+            if(event.type == sf::Event::MouseButtonReleased)
+            {
 
-            if(paginaTerminada){
+                if(event.mouseButton.button == sf::Mouse::Left)
+                {
+                    sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
 
-                RenderizarOpciones(z);
-                if(z->OpVacio()){
+                    if(paginaTerminada){
 
-                    if(event.type == sf::Event::MouseButtonReleased){
-
-                        if(event.mouseButton.button == sf::Mouse::Left){
-
-                            sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
-
+                        RenderizarOpciones(z);
+                        if(z->OpVacio()){
+                
                             if(BoxContinuar.contains(clickPos)){
                                 ActualizarInventario(z);
                                 if(z->vivoenemi()){
@@ -334,50 +418,62 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                             
 
                         }
-                    }
-                }
-                else{
-                    if(event.type == sf::Event::MouseButtonReleased){
-                        if(event.mouseButton.button == sf::Mouse::Left){
-                            sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
+                        else{
+                            for(size_t j = 0; j < BoxOpciones.size(); j++)
+                            {
 
-                            for(size_t j = 0; j < BoxOpciones.size(); j++){
-
-                                if(BoxOpciones[j].contains(clickPos)){
+                                if(BoxOpciones[j].contains(clickPos))
+                                {
                                     ActualizarInventario(z);
                                     z = z->GetEscena(j);
                                     ResetearNarrativa(z->GetTexto());
                                 }
 
                             }
-                
+                        
+                        }
+                    }else{
+                        if(event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+                        {
+                            caracteresMostrados = textoCompletoActual.length();
+                            textoVisible.setString(textoCompletoActual);
+                            paginaTerminada = true;
                         }
                     }
-                }
+                    if(!ObjetosPerso.empty()){
 
-                if(z->tieneobj()){
-                    for(auto x : z->getObjetos()){
-                        Objeto* copia(x);
+                        for(size_t x = 0; x < BoxObjetos.size() ; x++){
 
-                        pj.anadirObjeto(copia);
+                            if(BoxObjetos[x].contains(clickPos)){
+
+                                pj.usarObjetoEnRanura(x);
+                                ActualizarInfoPersonaje(pj);
+                                InventarioPersonaje(pj);
+                                InfoObjeto(pj);
+
+                            }
+
+                        }
 
                     }
-                    ActualizarInventario(z);
-                    z->Vaciar();
-                    InventarioPersonaje(pj);
-                }
+                
+                }     
             }
-            else{
-                if(event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left){
-                   caracteresMostrados = textoCompletoActual.length();
-                   textoVisible.setString(textoCompletoActual);
-                   paginaTerminada = true;
-                }
-
-            }
-
         }
+            
+            if(z->tieneobj()){
+                for(auto x : z->getObjetos()){
 
+                    Objeto* copia(x);
+                    pj.anadirObjeto(copia);
+
+                }
+                ActualizarInventario(z);
+                z->Vaciar();
+                InventarioPersonaje(pj);
+                InfoObjeto(pj);
+            }
+            
         if (!paginaTerminada) {
             RenderizarOpciones(z);
             if (clock.getElapsedTime() >= TIEMPO_POR_CARACTER) {
@@ -440,6 +536,7 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
         window.draw(textoVisible);
         window.draw(textoVida);
         window.draw(textoAtributos);
+        window.draw(Inventario);
 
         if(!ObjetosPerso.empty()){
             for(auto f : ObjetosPerso){
@@ -453,7 +550,20 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
             }
         }
 
-        
+        if(!ObjetosPerso.empty()){
+
+            for(size_t x = 0; x < BoxObjetos.size() ; x++){
+
+                if(ObjetosPerso[x].getColor() == sf::Color::Red){
+                    window.draw(CuadroTexto);
+                    window.draw(Textito[x]);
+                }
+
+            }
+
+        }
+
+        window.draw(pj.getFoto());
         window.display();
     }
 
