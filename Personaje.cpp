@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Personaje.hpp"
-#include "Heroe.hpp"
 #include "Armas.hpp"
 
 Personaje::Personaje(Heroe nom) {
@@ -15,27 +14,52 @@ Personaje::Personaje(Heroe nom) {
             suerte = 13;
             inteligencia = 6;
             fuerza = 5;
+            PosesPersonaje.loadFromFile("Imagenes/SifrinoPos1.png");
+            FotoPer.loadFromFile("Imagenes/Sifrinos.png");
             break;
         case Heroe::Otaku:
             vida = 5;
             suerte = 15;
             inteligencia = 3;
             fuerza = 6;
+            PosesPersonaje.loadFromFile("Imagenes/OtakuPos1.png");
+            FotoPer.loadFromFile("Imagenes/Otaku.png");
             break;
         case Heroe::Negro:
             vida = 7;
             suerte = 2;
             inteligencia = 12;
             fuerza = 8;
+            PosesPersonaje.loadFromFile("Imagenes/NegroPos1.png");
+            FotoPer.loadFromFile("Imagenes/Negro.png");
             break;   
         case Heroe::Fifas:
             vida = 5;
             inteligencia = 3;
             suerte = 6;
             fuerza = 13;
+            PosesPersonaje.loadFromFile("Imagenes/FifasPos1.png");
+            FotoPer.loadFromFile("Imagenes/Fifas.png");
             break;
     }
+
+    PosesPersonajes.setTexture(PosesPersonaje);
+    PosesPersonajes.setScale(0.7f, 0.7f);
+    PosesPersonajes.setPosition(260,500);
+    FotoPers.setTexture(FotoPer);
+    FotoPers.setScale(0.2f, 0.15f);
+    FotoPers.setPosition(920.f , 40.f);
+
 }
+Personaje::~Personaje(){
+
+    for (Objeto* obj : inventario) {
+        delete obj;
+    }
+    inventario.clear();
+
+}
+
 void Personaje::ImprimirStats()const{
     std::cout<<" Vida: " <<vida << "Inteligencia, Fuerza: " <<inteligencia << " " <<fuerza;
 
@@ -92,6 +116,88 @@ int Personaje::getInteligencia() const{
 int Personaje::getSuerte() const{
     return suerte;
 }
+int Personaje::getdano(){
+    return std::get<1>(arm);
+}
+void Personaje::anadirObjeto(Objeto* obj){
+    bool encontradoYAgregado = false;
+    for (auto it = inventario.begin(); it != inventario.end(); ++it) {
+        Objeto* objExistente = *it; 
+    
+        if (objExistente && obj) {
+
+            if (objExistente->getNombre() == obj->getNombre()) {
+                objExistente->sumarCantidad(obj->getCantidad()); 
+                encontradoYAgregado = true;
+                delete obj;
+                obj = nullptr;
+                break;
+            }
+        }
+    }
+    if (!encontradoYAgregado && obj) { 
+        inventario.push_back(obj);
+    }
+}
+
+
+bool Personaje::usarObjetoEnRanura(int indiceRanura){
+    
+    Objeto* objetoACambiar = inventario[indiceRanura];
+    if (!objetoACambiar) {
+        std::cerr << "Error: La ranura de inventario " << indiceRanura << " contiene un puntero nulo." << std::endl;
+        return false;
+    }
+
+    bool AunHay = objetoACambiar->usarObjeto(*this); 
+    if (AunHay) {
+        return true;
+    }
+    else{
+        delete objetoACambiar;
+        inventario.erase(inventario.begin() + indiceRanura); 
+        return true;
+    }
+
+}
+
+const std::vector<Objeto*>& Personaje::getInventario() const{
+
+    return inventario;
+
+}
+
+
+bool Personaje::tieneLlave(const std::string& nombreLlave) const{
+
+    for(auto x : inventario){
+        if(x && x->getNombre() == nombreLlave){
+            return true;
+        }
+    }
+    return false;
+
+}
+void Personaje::consumirLlave(const std::string& nombreLlave){
+    for (auto it = inventario.begin(); it != inventario.end(); ++it) {
+        Objeto* obj = *it;
+        if (obj && obj->getTipo() == TipoObjeto::Llave && obj->getNombre() == nombreLlave) {
+            delete obj; 
+            inventario.erase(it); 
+            return; 
+        }
+    }
+
+}
+sf::Texture& Personaje::getTexture(){
+    return PosesPersonaje;
+}
+sf::Sprite& Personaje::getSprite(){
+    return PosesPersonajes;
+}
+sf::Sprite& Personaje::getFoto(){
+    return FotoPers;
+}
 
 
 // PASANDO A FUNCIONES DE ENEMIGOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
@@ -133,6 +239,7 @@ int Enemigo::getVida() const{
     return vida;
 }
 std::string Enemigo::getNombre() const{
+
     switch(tipo){
         case Enem::Rata :
             return "Rata";
@@ -147,5 +254,33 @@ std::string Enemigo::getNombre() const{
             return "Perro";
     }
     return "";
+}
+
+std::string Enemigo::getArma() const{
+
+    switch(std::get<0>(arm)){
+        case ArmEne::Ninguna :
+            return "Ninguna";
+        
+        case ArmEne::Garras :
+            return "Garras";
+        
+        case ArmEne::Mordida :
+            return "Mordida";
+        
+        case ArmEne::Pistola :
+            return "Pistola";
+    }
+    return "";
+}
+
+void Enemigo::CambiarVida(int i){
+    vida = vida + i;
+    if(vida <= 0){
+        vivo = false;
+    }
+}
+int Enemigo::getdano(){
+    return std::get<1>(arm);
 }
 

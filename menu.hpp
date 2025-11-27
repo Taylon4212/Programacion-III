@@ -1,8 +1,9 @@
 #include <iostream>
-#include "Heroe.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Personaje.hpp"
+#include "History.hpp"
+#include "Juego.hpp"
 #pragma once
 
 class Menu{
@@ -18,14 +19,18 @@ class Menu{
 
         sf::SoundBuffer SelecFifas;
         sf::Sound SeleccionFifas;
-
         sf::Music MusicMenu;
+
+        sf::Font font;
+
+        sf::Texture back;
+        sf::Sprite backs;
 
 
     public:
-        bool MostrarMenu();
+        Menu();
+        Heroe MostrarMenu(sf::RenderWindow& window);
         Heroe elegirPersonaje(sf::RenderWindow& window);
-        void acercaDe();
         //void cargarPartida();
         void MostrarCreditos(sf::RenderWindow& window);
         

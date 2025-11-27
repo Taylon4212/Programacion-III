@@ -3,26 +3,29 @@
 #include <iostream>
 #include "menu.hpp"
 
-void Menu::MostrarCreditos(sf::RenderWindow& window){
+Menu::Menu(){
+    font.loadFromFile("Textos/leadcoat.ttf");
 
-    //Imagen de Fondo
-    sf::Texture back;
+    //Imagen de Fondo Creditos
     back.loadFromFile("Imagenes/Menus2.png");
-    sf::Sprite backs(back);
-    
-    float ventanaAncho = static_cast<float>(window.getSize().x);
-    float ventanaAlto = static_cast<float>(window.getSize().y);
+    backs.setTexture(back);
 
-    float escalaX = ventanaAncho / back.getSize().x;
-    float escalaY = ventanaAlto / back.getSize().y;
+    float escalaX = 1220.f / back.getSize().x;
+    float escalaY = 800.f / back.getSize().y;
 
     backs.setScale(escalaX, escalaY);
 
 
 
+
+
+
+
+
+}
+void Menu::MostrarCreditos(sf::RenderWindow& window){
+
     //Texto de Programacion
-    sf::Font font;
-    font.loadFromFile("Textos/leadcoat.ttf");
     sf::Text all("Proyecto de Programacion 3: \n\n Dickson Labrador", font,35);
     all.setPosition(40, 100);
 
@@ -73,7 +76,7 @@ void Menu::MostrarCreditos(sf::RenderWindow& window){
     }
 }
 
-bool Menu::MostrarMenu(){
+Heroe Menu::MostrarMenu(sf::RenderWindow& window){
 
     // Cargar los sonidos del menu
 
@@ -111,11 +114,6 @@ bool Menu::MostrarMenu(){
 
 
 
-
-        //Mostrar Ventana
-        
-        sf::RenderWindow window(sf::VideoMode({800, 600}), "Farlaut RPG");
-
         //Ajustando el fondo a la ventana
         float ventanaAncho = static_cast<float>(window.getSize().x);
         float ventanaAlto = static_cast<float>(window.getSize().y);
@@ -126,29 +124,17 @@ bool Menu::MostrarMenu(){
 
         //Reproducioendo la musica
         //MusicMenu.play();
-        SeleccionNegro.play();
+        //SeleccionNegro.play();
 
 
         //Botones de iniciar partida
-        sf::Font font;
-        if(!font.loadFromFile(("Textos/leadcoat.ttf"))){
-            std::cerr<<"Error al cargar la fuente"<<std::endl;
-        }
         sf::Text nuevoJuego("Nuevo juego", font, 50);
         nuevoJuego.setPosition(40, 130);
         //Boton de salir
-        sf::Font font1;
-        if(!font1.loadFromFile(("Textos/leadcoat.ttf"))){
-            std::cerr<<"Error al cargar la fuente"<<std::endl;
-        }
         sf::Text Salir("Salir", font, 50);
         Salir.setPosition(40, 330);
         //boton de Creditos
-        sf::Font font2;
-        if(!font2.loadFromFile("Textos/leadcoat.ttf")){
-            std::cerr<<"Error al cargar la fuente"<<std::endl;
-        }
-        sf::Text Creditos("Creditos", font2, 50);
+        sf::Text Creditos("Creditos", font, 50);
         Creditos.setPosition(40, 230);
 
 
@@ -176,7 +162,7 @@ bool Menu::MostrarMenu(){
                         sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
 
                         if(hitBoxNuevo.contains(clickPos)){
-                            Personaje Jugador(elegirPersonaje(window));
+                            return elegirPersonaje(window);
                         }
                         else if(hitBoxCreditos.contains(clickPos)){
                             MostrarCreditos(window);
@@ -214,15 +200,13 @@ bool Menu::MostrarMenu(){
             window.draw(Salir);
             window.display();
         }
-        return false;
+        return Heroe::Negro;
     }
 
 Heroe Menu::elegirPersonaje(sf::RenderWindow& window){
     //Image de Fondo
-    sf::Font font;
-    font.loadFromFile("Textos/leadcoat.ttf");
-    sf::Text Juego("Selecciona un Personaje", font, 60);
-    Juego.setPosition(130, 90);
+    sf::Text Juego("Selecciona un Personaje", font, 80);
+    Juego.setPosition(280, 140);
     sf::Texture fondo;
     fondo.loadFromFile("Imagenes/Menus.jpg");
     sf::Sprite fondoSprite(fondo);
@@ -231,37 +215,42 @@ Heroe Menu::elegirPersonaje(sf::RenderWindow& window){
 
     float xventana = static_cast<float>(window.getSize().x);
     float yventana = static_cast<float>(window.getSize().y);
-
     float escalaX = xventana / fondo.getSize().x;
     float escalaY = yventana / fondo.getSize().y;
 
     fondoSprite.setScale(escalaX,escalaY);
 
+    
     //Negro Imagen y Titulo
     sf::Texture Negro;
     Negro.loadFromFile("Imagenes/Negro.png");
     sf::Sprite Negros(Negro);
-    Negros.setPosition(190,170);
+    Negros.setScale( 150.0f / Negro.getSize().x, 150.0f / Negro.getSize().y);
+
+    Negros.setPosition(190, 380);
     sf::Text TextoNegro("Negro" , font, 40);
-    TextoNegro.setPosition(210,300);
+    TextoNegro.setPosition(210, 520);
+    
 
 
     //Sifrino Imagen y Titulo
     sf::Texture Sifrino;
     Sifrino.loadFromFile("Imagenes/Sifrinos.png");
     sf::Sprite Sifrinos(Sifrino);
-    Sifrinos.setPosition(440, 170);
+    Sifrinos.setPosition(660, 380);
     sf::Text TextoSifrino("Sifrino", font, 40);
-    TextoSifrino.setPosition(460,300);
+    TextoSifrino.setPosition(680,520);
+    Sifrinos.setScale( 150.0f / Sifrino.getSize().x, 150.0f / Sifrino.getSize().y);
 
 
     //Otaku Imagen y Titulo
     sf::Texture Otaku;
     Otaku.loadFromFile("Imagenes/Otaku.png");
     sf::Sprite Otakus(Otaku);
-    Otakus.setPosition(190, 380);
+    Otakus.setPosition(910, 380);
     sf::Text TextoOtaku("Otaku", font, 40);
-    TextoOtaku.setPosition(210, 520);
+    TextoOtaku.setPosition(920, 520);
+    Otakus.setScale( 150.0f / Otaku.getSize().x, 150.0f / Otaku.getSize().y);
 
     //Fifas Imagen y Titulo
     
@@ -271,6 +260,7 @@ Heroe Menu::elegirPersonaje(sf::RenderWindow& window){
     Fifas.setPosition(440, 380);
     sf::Text TextoFifa("Fifas", font, 40);
     TextoFifa.setPosition(460, 520);
+    Fifas.setScale( 150.0f / Fifa.getSize().x, 150.0f / Fifa.getSize().y);
     
     //Hitbox para cada imagen y titulo
     //Imagenes

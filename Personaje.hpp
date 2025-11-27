@@ -1,11 +1,17 @@
-#pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Heroe.hpp"
 #include "Armas.hpp"
 #include "Inventario.hpp"
 #include <tuple>
 #include <vector>
+#pragma once
+
+enum class Heroe{
+    Sifrino,
+    Otaku,
+    Negro,
+    Fifas
+};
 
 class Personaje {
 private:
@@ -16,25 +22,52 @@ private:
     int fuerza;
     Heroe tipo;
     std::tuple<Arma, int> arm;
-    std::vector<Objeto> inventario;
+    std::vector<Objeto*> inventario;
+    sf::Texture PosesPersonaje;
+    sf::Sprite PosesPersonajes;
+    sf::Texture FotoPer;
+    sf::Sprite FotoPers;
 
 public:
+    //Constructor
     Personaje(Heroe nom);
+    ~Personaje();
+
+    //Getters
     bool getVivo() const;
     int getVida() const;
-    Heroe getTipo() const;
     void ImprimirStats() const;
+    Heroe getTipo() const;
+    int getFuerza() const;
+    int getInteligencia() const;
+    int getSuerte() const;
+    int getdano(); 
+    sf::Texture& getTexture();
+    sf::Sprite& getSprite();
+    sf::Sprite& getFoto();
+
+    //Otros
     void RecogerArma(Arma a, int b);
     std::string TipotoString()const;
     void Curar(int v);
     void RecibirDanio(int d);
-    int getFuerza() const;
-    int getInteligencia() const;
-    int getSuerte() const;
 
+    //Inventario pe
+    void anadirObjeto(Objeto* obj);
+    bool usarObjetoEnRanura(int indiceRanura);
+    const std::vector<Objeto*>& getInventario() const; // Devuelve referencia constante
+    bool tieneLlave(const std::string& nombreLlave) const;
+    void consumirLlave(const std::string& nombreLlave);
 };
 
 
+
+enum class Enem{
+    Rata,
+    Cucaracha,
+    Saqueador,
+    Perro,
+};
 
 class Enemigo{
 private:
@@ -47,5 +80,8 @@ public:
     Enemigo(Enem x );
     bool getVivo() const;
     int getVida() const;
+    std::string getArma() const;
     std::string getNombre() const;
+    void CambiarVida(int i);
+    int getdano();
 };
