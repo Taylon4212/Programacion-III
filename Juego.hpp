@@ -21,7 +21,8 @@ class Juego{
         std::vector<sf::Text> opcionesTextoSFML;
         std::vector<sf::FloatRect> BoxOpciones;
         std::vector<sf::Text> TextObjetos;
-        //std::vector<sf::Sprite> ObjetosPerso;
+        std::vector<sf::Sprite> ObjetosPerso;
+        std::vector<sf::FloatRect> BoxObjetos;
         
         
         std::string textoCompletoActual;
@@ -35,6 +36,7 @@ class Juego{
         void ActualizarInfoPersonaje(const Personaje& pj);
         void RenderizarOpciones(const Escena* escenaActual);
         void ActualizarInventario(Escena* h);
+        void InventarioPersonaje(const Personaje& pj);
         
     public:
         void Iniciar(Personaje& pj, Historia& h);

@@ -13,12 +13,13 @@ int main()
 
     Menu m;
 
-    while(window.isOpen()){
-
-        m.MostrarMenu(window);
+    Heroe j = m.MostrarMenu(window);
 
 
-    }
+    Personaje pj(j);
+    Historia h;
+    Juego game(window);
+    game.Iniciar(pj, h);
 
     return 0;
 }

@@ -75,18 +75,33 @@ void Juego::ActualizarInfoPersonaje(const Personaje& pj) {
     std::string vida = "VIDA: " + std::to_string(pj.getVida()) + "/10";
     textoVida.setString(vida);
 
-    sf::Sprite sprite;
-    int j = 0;
-    int i = 0;
+}
 
-    /*for(auto x : pj.getInventario()){
+void Juego::InventarioPersonaje(const Personaje& pj){
+
+    sf::Sprite sprite;
+    sf::Texture texture;
+    int j = 0.f;
+    int i = 0.f;
+
+    for(auto x : pj.getInventario()){
 
         sprite = x->getSprite();
-        sprite.setScale(0.5f, 0.5f);
-        sprite.setPosition(950, 600 + j * 20);
+        sprite.setScale(0.08f, 0.08f );
+        sprite.setPosition(880 + j * 110, 350 + i * 100);
+        
         ObjetosPerso.push_back(sprite);
+        BoxObjetos.push_back(sprite.getGlobalBounds());
+        j++;
 
-    }*/
+        if(j % 2 == 0){
+            j = 0;
+            i++;
+        }
+
+
+    }
+
 }
 
 void Juego::ActualizarInventario(Escena* h){
@@ -174,9 +189,7 @@ bool Juego::Pelear(sf::RenderWindow& window, Personaje& pj, Enemigo& enem){
         
         if(!Endpj){
             if(clock.getElapsedTime() >= TIEMPO_ESPERA){
-                std::cout<<"Funciona 1"<<std::endl;
                 enem.CambiarVida(-(pj.getdano()));
-                std::cout<<"Funciona 2"<<std::endl;
                 Vidaen.setString("    " + enem.getNombre() + "\n Vida: " + std::to_string(enem.getVida()));
                 Endpj = true;
                 clock.restart();
@@ -234,7 +247,11 @@ bool Juego::Pelear(sf::RenderWindow& window, Personaje& pj, Enemigo& enem){
         else if(!pj.getVivo() && enem.getVivo()){
             window.draw(derrota);
         }
-
+        if(!ObjetosPerso.empty()){
+            for(auto f : ObjetosPerso){
+                window.draw(f);
+            }
+        }
         window.draw(textoAtributos);
         window.draw(textoVida);
         window.display();
@@ -276,6 +293,7 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
         sf::Event event;
         sf::Vector2f mousepos = (sf::Vector2f)sf::Mouse::getPosition(window);
         while (window.pollEvent(event)){
+            
 
             
             
@@ -299,6 +317,7 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                                 ActualizarInventario(z);
                                 if(z->vivoenemi()){
                                     Pelear(window, pj, *z->GetEnemigo());
+                                    ActualizarInfoPersonaje(pj);
                                 }
 
                                 i++;
@@ -311,21 +330,27 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                                     //Funcion Game Over
                                 }
                             }
+                            
+                            
+
                         }
                     }
                 }
                 else{
-                    if(event.mouseButton.button == sf::Mouse::Left){
-                        sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
+                    if(event.type == sf::Event::MouseButtonReleased){
+                        if(event.mouseButton.button == sf::Mouse::Left){
+                            sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
 
-                        for(size_t j = 0; j < BoxOpciones.size(); j++){
+                            for(size_t j = 0; j < BoxOpciones.size(); j++){
 
-                            if(BoxOpciones[j].contains(clickPos)){
-                                ActualizarInventario(z);
-                                z = z->GetEscena(j);
-                                ResetearNarrativa(z->GetTexto());
+                                if(BoxOpciones[j].contains(clickPos)){
+                                    ActualizarInventario(z);
+                                    z = z->GetEscena(j);
+                                    ResetearNarrativa(z->GetTexto());
+                                }
+
                             }
-
+                
                         }
                     }
                 }
@@ -339,6 +364,7 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                     }
                     ActualizarInventario(z);
                     z->Vaciar();
+                    InventarioPersonaje(pj);
                 }
             }
             else{
@@ -384,6 +410,17 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                 Continuar.setFillColor(sf::Color::Blue);
             }
         }
+
+        if(!ObjetosPerso.empty()){
+            for(size_t x = 0; x < BoxObjetos.size() ; x++){
+                if(BoxObjetos[x].contains(mousepos)){
+                    ObjetosPerso[x].setColor(sf::Color::Red);
+                }
+                else{
+                    ObjetosPerso[x].setColor(sf::Color::White);
+                }
+            }
+        }
        
         //Escritura en pantalla
         
@@ -404,12 +441,19 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
         window.draw(textoVida);
         window.draw(textoAtributos);
 
+        if(!ObjetosPerso.empty()){
+            for(auto f : ObjetosPerso){
+                window.draw(f);
+            }
+        }
+
         if(paginaTerminada && !TextObjetos.empty()){
             for(auto f : TextObjetos){
                 window.draw(f);
             }
         }
 
+        
         window.display();
     }
 

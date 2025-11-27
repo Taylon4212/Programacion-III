@@ -23,10 +23,13 @@ class Menu{
 
         sf::Font font;
 
+        sf::Texture back;
+        sf::Sprite backs;
+
 
     public:
         Menu();
-        void MostrarMenu(sf::RenderWindow& window);
+        Heroe MostrarMenu(sf::RenderWindow& window);
         Heroe elegirPersonaje(sf::RenderWindow& window);
         //void cargarPartida();
         void MostrarCreditos(sf::RenderWindow& window);

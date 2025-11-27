@@ -5,23 +5,25 @@
 
 Menu::Menu(){
     font.loadFromFile("Textos/leadcoat.ttf");
-}
-void Menu::MostrarCreditos(sf::RenderWindow& window){
 
-    //Imagen de Fondo
-    sf::Texture back;
+    //Imagen de Fondo Creditos
     back.loadFromFile("Imagenes/Menus2.png");
-    sf::Sprite backs(back);
-    
-    float ventanaAncho = static_cast<float>(window.getSize().x);
-    float ventanaAlto = static_cast<float>(window.getSize().y);
+    backs.setTexture(back);
 
-    float escalaX = ventanaAncho / back.getSize().x;
-    float escalaY = ventanaAlto / back.getSize().y;
+    float escalaX = 1220.f / back.getSize().x;
+    float escalaY = 800.f / back.getSize().y;
 
     backs.setScale(escalaX, escalaY);
 
 
+
+
+
+
+
+
+}
+void Menu::MostrarCreditos(sf::RenderWindow& window){
 
     //Texto de Programacion
     sf::Text all("Proyecto de Programacion 3: \n\n Dickson Labrador", font,35);
@@ -74,7 +76,7 @@ void Menu::MostrarCreditos(sf::RenderWindow& window){
     }
 }
 
-void Menu::MostrarMenu(sf::RenderWindow& window){
+Heroe Menu::MostrarMenu(sf::RenderWindow& window){
 
     // Cargar los sonidos del menu
 
@@ -160,10 +162,7 @@ void Menu::MostrarMenu(sf::RenderWindow& window){
                         sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
 
                         if(hitBoxNuevo.contains(clickPos)){
-                            Personaje Pj(elegirPersonaje(window));
-                            Historia h;
-                            Juego game(window);
-                            game.Iniciar(Pj, h);
+                            return elegirPersonaje(window);
                         }
                         else if(hitBoxCreditos.contains(clickPos)){
                             MostrarCreditos(window);
@@ -201,6 +200,7 @@ void Menu::MostrarMenu(sf::RenderWindow& window){
             window.draw(Salir);
             window.display();
         }
+        return Heroe::Negro;
     }
 
 Heroe Menu::elegirPersonaje(sf::RenderWindow& window){
