@@ -31,7 +31,7 @@ Sigue estos pasos para compilar y ejecutar el proyecto:
       - Las librerias SFML (version 2.x.x).
 
 3.  Compilar el Proyecto:
-    Para compilar el juego, utiliza el Makefile proporcionado. pero primero utilizar "make clean" para la limpieza de codigo y luego si un m
+    Para compilar el juego, utiliza el Makefile proporcionado. pero primero utilizar "make clean" para la limpieza de codigo y luego si un make
 
     make clean
     make
