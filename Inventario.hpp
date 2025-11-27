@@ -33,7 +33,7 @@ class Objeto {
         void sumarCantidad(int c);
         bool usarObjeto(Personaje& usuario);
         int getEfecto() const;
-
+        sf::Texture& getTexture();
         sf::Sprite& getSprite();
         const std::string& getTexturePath() const;
 };

@@ -20,6 +20,8 @@ class Juego{
         sf::FloatRect BoxContinuar;
         std::vector<sf::Text> opcionesTextoSFML;
         std::vector<sf::FloatRect> BoxOpciones;
+        std::vector<sf::Text> TextObjetos;
+        //std::vector<sf::Sprite> ObjetosPerso;
         
         
         std::string textoCompletoActual;
@@ -32,6 +34,7 @@ class Juego{
         void ResetearNarrativa(const std::string& nuevoTexto);
         void ActualizarInfoPersonaje(const Personaje& pj);
         void RenderizarOpciones(const Escena* escenaActual);
+        void ActualizarInventario(Escena* h);
         
     public:
         void Iniciar(Personaje& pj, Historia& h);

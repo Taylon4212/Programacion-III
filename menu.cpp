@@ -3,6 +3,9 @@
 #include <iostream>
 #include "menu.hpp"
 
+Menu::Menu(){
+    font.loadFromFile("Textos/leadcoat.ttf");
+}
 void Menu::MostrarCreditos(sf::RenderWindow& window){
 
     //Imagen de Fondo
@@ -21,8 +24,6 @@ void Menu::MostrarCreditos(sf::RenderWindow& window){
 
 
     //Texto de Programacion
-    sf::Font font;
-    font.loadFromFile("Textos/leadcoat.ttf");
     sf::Text all("Proyecto de Programacion 3: \n\n Dickson Labrador", font,35);
     all.setPosition(40, 100);
 
@@ -125,25 +126,13 @@ void Menu::MostrarMenu(sf::RenderWindow& window){
 
 
         //Botones de iniciar partida
-        sf::Font font;
-        if(!font.loadFromFile(("Textos/leadcoat.ttf"))){
-            std::cerr<<"Error al cargar la fuente"<<std::endl;
-        }
         sf::Text nuevoJuego("Nuevo juego", font, 50);
         nuevoJuego.setPosition(40, 130);
         //Boton de salir
-        sf::Font font1;
-        if(!font1.loadFromFile(("Textos/leadcoat.ttf"))){
-            std::cerr<<"Error al cargar la fuente"<<std::endl;
-        }
         sf::Text Salir("Salir", font, 50);
         Salir.setPosition(40, 330);
         //boton de Creditos
-        sf::Font font2;
-        if(!font2.loadFromFile("Textos/leadcoat.ttf")){
-            std::cerr<<"Error al cargar la fuente"<<std::endl;
-        }
-        sf::Text Creditos("Creditos", font2, 50);
+        sf::Text Creditos("Creditos", font, 50);
         Creditos.setPosition(40, 230);
 
 
@@ -216,8 +205,6 @@ void Menu::MostrarMenu(sf::RenderWindow& window){
 
 Heroe Menu::elegirPersonaje(sf::RenderWindow& window){
     //Image de Fondo
-    sf::Font font;
-    font.loadFromFile("Textos/leadcoat.ttf");
     sf::Text Juego("Selecciona un Personaje", font, 80);
     Juego.setPosition(280, 140);
     sf::Texture fondo;

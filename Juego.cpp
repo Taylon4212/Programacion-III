@@ -74,6 +74,37 @@ void Juego::ActualizarInfoPersonaje(const Personaje& pj) {
     textoAtributos.setString(atributos);
     std::string vida = "VIDA: " + std::to_string(pj.getVida()) + "/10";
     textoVida.setString(vida);
+
+    sf::Sprite sprite;
+    int j = 0;
+    int i = 0;
+
+    /*for(auto x : pj.getInventario()){
+
+        sprite = x->getSprite();
+        sprite.setScale(0.5f, 0.5f);
+        sprite.setPosition(950, 600 + j * 20);
+        ObjetosPerso.push_back(sprite);
+
+    }*/
+}
+
+void Juego::ActualizarInventario(Escena* h){
+
+    if(h->tieneobj()){
+        int j = 0;
+        sf::Text mientras("", font, 20);
+        for(auto x: h->getObjetos()){
+            j++;
+            std::string h = std::to_string(x->getCantidad());
+            mientras.setString(x->getNombre() + "s, Cantidad: " + h);
+            mientras.setPosition(300.f, 400.f + j * 30.f);
+            TextObjetos.push_back(mientras);
+        }
+    }
+    else{
+        TextObjetos.clear();
+    }
 }
 
 void Juego::RenderizarOpciones(const Escena* escenaActual) {
@@ -196,12 +227,14 @@ bool Juego::Pelear(sf::RenderWindow& window, Personaje& pj, Enemigo& enem){
         window.draw(Danoen);
         window.draw(Vidapj);
         window.draw(Vidaen);
+
         if(pj.getVivo() && !enem.getVivo()){
             window.draw(victoria);
         }
         else if(!pj.getVivo() && enem.getVivo()){
             window.draw(derrota);
         }
+
         window.draw(textoAtributos);
         window.draw(textoVida);
         window.display();
@@ -228,6 +261,7 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
 
 
     auto allescenes = h.GetEscena();
+
     if (allescenes.empty()) {
         std::cerr << "Error: No hay escenas en la historia." << std::endl;
         return; 
@@ -242,6 +276,8 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
         sf::Event event;
         sf::Vector2f mousepos = (sf::Vector2f)sf::Mouse::getPosition(window);
         while (window.pollEvent(event)){
+
+            
             
             if (event.type == sf::Event::Closed)
                 window.close();
@@ -249,6 +285,7 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
             
 
             if(paginaTerminada){
+
                 RenderizarOpciones(z);
                 if(z->OpVacio()){
 
@@ -259,6 +296,7 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                             sf::Vector2f clickPos((float)event.mouseButton.x, (float)event.mouseButton.y);
 
                             if(BoxContinuar.contains(clickPos)){
+                                ActualizarInventario(z);
                                 if(z->vivoenemi()){
                                     Pelear(window, pj, *z->GetEnemigo());
                                 }
@@ -283,6 +321,7 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                         for(size_t j = 0; j < BoxOpciones.size(); j++){
 
                             if(BoxOpciones[j].contains(clickPos)){
+                                ActualizarInventario(z);
                                 z = z->GetEscena(j);
                                 ResetearNarrativa(z->GetTexto());
                             }
@@ -293,17 +332,12 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
 
                 if(z->tieneobj()){
                     for(auto x : z->getObjetos()){
-                        Objeto* copia = new Objeto(x->getTipo(),         
-                        x->getNombre(),
-                        x->getUso(),
-                        x->getCantidad(),
-                        x->getEfecto(),
-                        x->getTexturePath()
-                        );
+                        Objeto* copia(x);
 
                         pj.anadirObjeto(copia);
 
                     }
+                    ActualizarInventario(z);
                     z->Vaciar();
                 }
             }
@@ -342,6 +376,14 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
                 }
             }
         }
+        if(z->OpVacio() && paginaTerminada ){
+            if(BoxContinuar.contains(mousepos)){
+                Continuar.setFillColor(sf::Color::Red);
+            }
+            else{
+                Continuar.setFillColor(sf::Color::Blue);
+            }
+        }
        
         //Escritura en pantalla
         
@@ -361,6 +403,13 @@ void Juego::Iniciar(Personaje& pj, Historia& h){
         window.draw(textoVisible);
         window.draw(textoVida);
         window.draw(textoAtributos);
+
+        if(paginaTerminada && !TextObjetos.empty()){
+            for(auto f : TextObjetos){
+                window.draw(f);
+            }
+        }
+
         window.display();
     }
 

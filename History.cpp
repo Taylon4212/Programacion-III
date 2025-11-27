@@ -13,11 +13,11 @@ Historia::Historia(){
 	Después de pasar un poco de paranoia, nuestro superviviente escucha un ruido ensordecedor, ¿que puede ser?¿Un disparo?, ¿una explosion?, lleno de miedo, se refugia en un edificio que tiene a su lado
 
     ¿que debería de hacer?.)";
-    //Escena* aggIn = Lineal.back();
+    Escena* aggIn = Lineal.back();
 
-    //auto x = new Objeto(TipoObjeto::Curar, "Botiuin", "Cura 1 puntos al personaje", 1, 1,  "Imagenes/Botiuin.png");
+    auto x = new Objeto(TipoObjeto::Curar, "Botiuin", "Cura 1 puntos al personaje", 1, 1,  "Imagenes/Botiuin.png");
 
-    //aggIn->anadirObjEs(x);
+    aggIn->anadirObjEs(x);
 
 
     Lineal.push_back(new Escena(TextoEscena, "Imagenes/Escena2.png"));

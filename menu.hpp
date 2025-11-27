@@ -19,11 +19,13 @@ class Menu{
 
         sf::SoundBuffer SelecFifas;
         sf::Sound SeleccionFifas;
-
         sf::Music MusicMenu;
+
+        sf::Font font;
 
 
     public:
+        Menu();
         void MostrarMenu(sf::RenderWindow& window);
         Heroe elegirPersonaje(sf::RenderWindow& window);
         //void cargarPartida();

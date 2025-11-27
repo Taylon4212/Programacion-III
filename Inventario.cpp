@@ -72,9 +72,13 @@ bool Objeto::usarObjeto(Personaje& pj){
     return cantidad > 0;
 }
 sf::Sprite& Objeto::getSprite(){
-
     return sprite;
 }
 const std::string& Objeto::getTexturePath() const {
     return m_texturePath;
+}
+sf::Texture& Objeto::getTexture(){
+
+    return textura;
+
 }
